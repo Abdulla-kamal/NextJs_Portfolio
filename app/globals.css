@@ -1,24 +1,32 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-main: #04A473;
 }
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
 
+/* 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: url("/image.png");
     --foreground: #ededed;
   }
-}
+} */
 
 body {
-  color: var(--foreground);
-  background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.li-text {
+  display: block;
+  width: 100%;
+}
+.li-text:hover {
+  color: black;
+  font-size: large;
 }
