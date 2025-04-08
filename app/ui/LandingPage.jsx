@@ -22,7 +22,7 @@ export default function LandingPagev() {
   return (
     <div className="h-full" id="home">
       {/* Right Col */}
-      <div className="h-screen md:container mx-auto flex flex-col w-full justify-center lg:items-start overflow-y-hidden ">
+      <div className=" h-screen md:container mx-auto flex flex-col w-full justify-center lg:items-start overflow-y-hidden ">
         <ScrollReveal animationType="flip-in">
           <h1 className="my-4 text-3xl md:text-5xl opacity-75 font-bold leading-tight text-center md:text-left">
             Hi, My name is

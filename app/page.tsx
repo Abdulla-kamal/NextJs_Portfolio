@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <div className=" mx-auto flex flex-col flex-wrap justify-between xl:ml-[400px] ">
+      <div className="max-sm:container mx-auto mx-auto flex flex-col flex-wrap justify-between xl:ml-[400px] ">
         <LandingPage />
         <About />
         <Projects />
