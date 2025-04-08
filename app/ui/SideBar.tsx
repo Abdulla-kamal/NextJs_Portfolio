@@ -6,6 +6,7 @@ import { useState } from "react";
 import clsx from "clsx";
 import Image from "next/image";
 import { Layout } from "@deemlol/next-icons";
+import ScrollReveal from "../lib/ScrollReveal";
 
 export default function SideBar() {
   const [selected, setSelected] = useState(0);
@@ -38,13 +39,15 @@ export default function SideBar() {
       className="h-screen w-24 xl:w-1/4 p-12 overflow-hidden flex flex-col items-center justify-between fixed  max-xl:hidden z-900
 "
     >
-      <Image
-        className="mx-auto  transform -rotate-6 transition hover:scale-105 duration-700 ease-in-out hover:rotate-6 m w-[100px]"
-        width={100}
-        height={100}
-        src="/welcome.webp"
-        alt="Avatar"
-      />
+      <ScrollReveal animationType="scale-fade">
+        <Image
+          className="mx-auto  transform -rotate-6 transition hover:scale-105 duration-700 ease-in-out hover:rotate-6 m w-[100px]"
+          width={100}
+          height={100}
+          src="/welcome.webp"
+          alt="Avatar"
+        />
+      </ScrollReveal>
       <ul className="text-xl p-5 flex flex-col gap-y-5 w-full mt-4">
         {sidMenu.map((i, index) => (
           <li
@@ -75,7 +78,7 @@ export default function SideBar() {
         {/* Linkedin  */}
         <a
           className="inline-block text-blue-300 no-underline hover:text-blue-500 hover:underline text-center h-10 p-2 md:h-auto md:p-4 transform hover:scale-110 duration-300 ease-in-out"
-          href="https://www.linkedin.com/shareArticle?mini=true&url=YOUR_URL_HERE&title=YOUR_TITLE_HERE&summary=YOUR_SUMMARY_HERE&source=YOUR_SOURCE_HERE"
+          href="https://www.linkedin.com/in/abdulla-kamal-134604221/"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -90,7 +93,7 @@ export default function SideBar() {
         {/* GitHub  */}
         <a
           className="inline-block text-blue-300 no-underline hover:text-blue-900 hover:underline text-center h-10 p-2 md:h-auto md:p-4 transform hover:scale-110 duration-300 ease-in-out"
-          href="https://github.com/YOUR_PROFILE_OR_REPO_HERE"
+          href="https://github.com/Abdulla-kamal"
           target="_blank"
           rel="noopener noreferrer"
         >

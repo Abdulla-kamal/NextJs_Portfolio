@@ -12,9 +12,11 @@
     "@deemlol/next-icons": "^0.1.9",
     "axios": "^1.8.4",
     "clsx": "^2.1.1",
+    "framer-motion": "^12.6.3",
     "next": "15.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-intersection-observer": "^9.16.0",
     "swiper": "^11.2.5"
   },
   "devDependencies": {

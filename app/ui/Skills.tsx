@@ -1,4 +1,5 @@
 import Image from "next/image";
+import ScrollReveal from "../lib/ScrollReveal";
 
 export default function Skills() {
   const skills = [
@@ -53,7 +54,8 @@ export default function Skills() {
   ];
 
   return (
-    <section id="skills">
+        <ScrollReveal animationType="slide-up">
+    <section className="pb-15 pl-5" id="skills">
       <h2 className="text-2xl font-semibold text-gray-800 capitalize lg:text-3xl dark:text-white">
         Skills
       </h2>
@@ -88,5 +90,6 @@ export default function Skills() {
         ))}
       </div>
     </section>
+    </ScrollReveal>
   );
 }
