@@ -9,7 +9,7 @@ export default function LandingPagev() {
 
   const texts = ["websites", "resposive desings", "platforms"];
 
-  const morphTime = 1;
+  const morphTime = 4;
   const cooldownTime = 0.25;
 
   let textIndex = 0;

@@ -5,6 +5,7 @@ import { HelpCircle } from "@deemlol/next-icons";
 import { useState } from "react";
 import clsx from "clsx";
 import Image from "next/image";
+import { Layout } from "@deemlol/next-icons";
 
 export default function SideBar() {
   const [selected, setSelected] = useState(0);
@@ -12,18 +13,23 @@ export default function SideBar() {
   const sidMenu = [
     {
       title: "Home",
-      icon: <House size={40} color="#FFFFFF" />,
+      icon: <House size={35} className="text-black dark:text-white" />,
       sectionId: "home",
     },
     {
       title: "About Me",
-      icon: <HelpCircle size={40} color="#FFFFFF" />,
+      icon: <HelpCircle size={35} className="text-black dark:text-white" />,
       sectionId: "about-me",
     },
     {
       title: "Projects",
-      icon: <Terminal size={40} color="#FFFFFF" />,
+      icon: <Layout size={35} className="text-black dark:text-white" />,
       sectionId: "projects",
+    },
+    {
+      title: "Skills",
+      icon: <Terminal size={35} className="text-black dark:text-white" />,
+      sectionId: "skills",
     },
   ];
 
@@ -65,7 +71,7 @@ export default function SideBar() {
         ))}
       </ul>
       {/* Socials Acounts  */}
-      <div className="flex w-1/2 justify-end content-center mt-20">
+      <div className="flex w-1/2 justify-end content-center mt-10">
         {/* Linkedin  */}
         <a
           className="inline-block text-blue-300 no-underline hover:text-blue-500 hover:underline text-center h-10 p-2 md:h-auto md:p-4 transform hover:scale-110 duration-300 ease-in-out"

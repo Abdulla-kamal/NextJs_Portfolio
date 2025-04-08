@@ -2,6 +2,7 @@ import Header from "./ui/Header";
 import LandingPage from "./ui/LandingPage";
 import About from "./ui/About";
 import Projects from "./ui/Projects";
+import Skills from "./ui/Skills";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
         <LandingPage />
         <About />
         <Projects />
+        <Skills/>
         {/* <Test/> */}
       </div>
     </>
