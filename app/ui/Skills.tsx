@@ -74,7 +74,7 @@ export default function Skills() {
                 <Image src={skill.img} alt="html" width={200} height={200} />
               </div>
               <div className="flip-card-back flex flex-col text-center">
-                <h2 className="mt-4 text-xl font-semibold text-white uppercase">
+                <h2 className="mt-4 text-xl text-black dark:text-white font-semibold uppercase">
                   {skill.name}
                 </h2>
 
