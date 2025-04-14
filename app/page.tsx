@@ -4,6 +4,10 @@ import About from "./ui/About";
 import Projects from "./ui/Projects";
 import Skills from "./ui/Skills";
 
+
+
+
+
 export default function Home() {
   return (
     <>

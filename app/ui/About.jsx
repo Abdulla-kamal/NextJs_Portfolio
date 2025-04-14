@@ -22,7 +22,7 @@ export default function About() {
               Front-End Developer
             </h2>
           </ScrollReveal>
-          <ScrollReveal animationType="slide-left">
+          <ScrollReveal animationType="slide-up">
             <p
               className="md:text-lg sm:text-sm mt-5"
               style={{ lineHeight: "2" }}
@@ -37,7 +37,7 @@ export default function About() {
               journey in 2020.
             </p>
           </ScrollReveal>
-          <ScrollReveal animationType="slide-right">
+          <ScrollReveal animationType="slide-up">
             <p
               className="md:text-lg sm:text-sm mt-5"
               style={{ lineHeight: "2" }}
@@ -49,7 +49,7 @@ export default function About() {
               professionalism in this field
             </p>
           </ScrollReveal>
-          <ScrollReveal animationType="slide-left">
+          <ScrollReveal animationType="slide-up">
             <p
               className="md:text-lg sm:text-sm mt-5"
               style={{ lineHeight: "2" }}
