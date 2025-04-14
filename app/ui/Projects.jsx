@@ -6,24 +6,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import ScrollReveal from "../lib/ScrollReveal";
 import { fetchProjects } from "../lib/data";
 
-export default function Projects() {
-  const [repos, setRepos] = useState([]);
-  const [firstProj, setFirstProj] = useState([]);
+
+
+export default function Projects({repos}) {
   const [show, setShow] = useState(false);
-  async function fetchRepos() {
-    try {
-      const data = await fetchProjects();
-
-      setRepos(data.slice(4));
-      setFirstProj(data.slice(0, 6));
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  useEffect(() => {
-    fetchRepos();
-  }, []);
+console.log(repos)
+  // const repos = async function(){
+  //   const data = await fetchProjects();
+  //   console.log(data)
+  //   return data ? data : [];
+  // };
+  // console.log(s);
 
   const hash = Math.random().toString(36).substring(2); // Random string yo change cashing and updating images
   return (
@@ -38,11 +31,11 @@ export default function Projects() {
           </p>
         </ScrollReveal>
         <div className="grid grid-cols-1 gap-8 mt-8 xl:mt-12 xl:gap-12 md:grid-cols-2 xl:grid-cols-3">
-          {firstProj?.map((repo, index) => (
+          {repos?.slice(0, 6)?.map((repo, index) => (
             <div
               className="overflow-hidden bg-cover rounded-lg cursor-pointer h-96 group"
               style={{
-                backgroundImage: `url(https://opengraph.githubassets.com/${hash}/${repo.owner.login}/${repo.name})`,
+                backgroundImage: `url(https://opengraph.githubassets.com)`,
                 backgroundSize: "contain", // Change this line
                 backgroundPosition: "center", // Add this line
                 backgroundRepeat: "no-repeat", // Add this line
@@ -81,7 +74,7 @@ export default function Projects() {
                 },
               }}
             >
-              {repos?.map((repo, index) => (
+              {repos?.slice(4)?.map((repo, index) => (
                 <div
                   className="overflow-hidden bg-cover rounded-lg cursor-pointer h-96 group"
                   style={{
@@ -109,7 +102,7 @@ export default function Projects() {
           )}
         </AnimatePresence>
         <div className="flex">
-          {firstProj && show === false && (
+          {repos && show === false && (
             <button
               className="w-50 mx-auto text-center cursor-pointer text-blue-400 hover:underline  "
               onClick={() => setShow((prev) => !prev)}
