@@ -10,13 +10,7 @@ import { fetchProjects } from "../lib/data";
 
 export default function Projects({repos}) {
   const [show, setShow] = useState(false);
-console.log(repos)
-  // const repos = async function(){
-  //   const data = await fetchProjects();
-  //   console.log(data)
-  //   return data ? data : [];
-  // };
-  // console.log(s);
+;
 
   const hash = Math.random().toString(36).substring(2); // Random string yo change cashing and updating images
   return (

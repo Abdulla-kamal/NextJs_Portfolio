@@ -3,9 +3,13 @@
 import { useEffect, useState } from "react";
 import { Sun } from "@deemlol/next-icons";
 import { Moon } from "@deemlol/next-icons";
+import clsx from "clsx";
+import MobileMenu from "./Mobile-menu";
 
-const Header = () => {
+const Header = (dashboard) => {
   const [mode, setMode] = useState<"light" | "dark">("dark");
+  // Open And Close Mobile Menu
+  const [open, setOpen] = useState<boolean>(false);
   useEffect(() => {
     if (localStorage.getItem("mode")) {
       localStorage.setItem("mode", mode);
@@ -26,15 +30,37 @@ const Header = () => {
     setMode((prev) => (prev === "light" ? "dark" : "light"));
   }
 
+  // Toggle open and close mobile menu
+  function toggleMenu() {
+    setOpen((prev) => !prev);
+  }
+
   return (
-    <header className="w-full fixed inset-0 container mx-auto p-5 z-1000 h-[100px]">
+    <header className="w-full fixed inset-0  mx-auto p-5 z-1000 h-[100px]">
       {/* <input type="checkbox" className="" onClick={toggleModes} /> */}
-      <div className="w-full   flex items-center justify-between xl:justify-between ">
-        <button className="bg-main/55 rounded-md p-2 font-bold cursor-pointer xl:hidden w-[20%] ml-4">
-          <a href="/cv.pdf" download="cv.pdf">
-            CV
-          </a>
+      <div className="w-full   flex items-center justify-between xl:justify-between h-[40px]">
+        <button
+          className="rounded-md p-2 font-bold cursor-pointer xl:hidden w-[70px] ml-4 flex flex-col justify-center gap-y-2 relative"
+          onClick={toggleMenu}
+        >
+          <span
+            className={clsx("bg-main h-[2px] w-full transition-transform duration-300 ease-in-out", {
+              "rotate-45  translate-y-2": open,
+            })}
+          ></span>
+          <span
+            className={clsx("bg-main h-[2px] w-full transition-transform duration-300 ease-in-out", {
+              "-rotate-45": open,
+            })}
+          ></span>
+          <span
+            className={clsx("bg-main h-[2px] w-full transition-opacity duration-300 ease-in-out", {
+              hidden: open,
+            })}
+          ></span>
         </button>
+        {/* Mobile Menu  */}
+        <MobileMenu open = {open} dashboard ={dashboard}/>
         <div onClick={toggleModes} className="cursor-pointer z-2000">
           {mode === "dark" ? (
             <Sun size={24} color="#FFFFFF" />
@@ -52,6 +78,7 @@ const Header = () => {
           </span>
         </a>
       </div>
+      
     </header>
   );
 };
