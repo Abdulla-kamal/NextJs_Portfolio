@@ -8,8 +8,13 @@ import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function DashboardSideNav() {
+export default function DashboardSideNav({
+  isProjectViewPage,
+}: {
+  isProjectViewPage: boolean;
+}) {
   const pathName = usePathname();
+
   const sideMenu = [
     {
       title: "Add Project",
@@ -23,7 +28,14 @@ export default function DashboardSideNav() {
     },
   ];
   return (
-    <div className="h-screen w-24 xl:w-1/4 p-12 overflow-hidden flex flex-col items-center justify-between fixed  max-xl:hidden z-900">
+    <div
+      className={clsx(
+        "h-screen w-24 xl:w-1/4 p-12 overflow-hidden flex flex-col items-center justify-between fixed  max-xl:hidden z-900",
+        {
+          hidden: isProjectViewPage,
+        }
+      )}
+    >
       <ScrollReveal animationType="scale-fade">
         <Image
           className="mx-auto  transform -rotate-6 transition hover:scale-105 duration-700 ease-in-out hover:rotate-6 m w-[100px]"

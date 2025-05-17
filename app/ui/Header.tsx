@@ -6,7 +6,7 @@ import { Moon } from "@deemlol/next-icons";
 import clsx from "clsx";
 import MobileMenu from "./Mobile-menu";
 
-const Header = (dashboard) => {
+const Header = ({ isProjectViewPage, place }: { isProjectViewPage: boolean, place:string }) => {
   const [mode, setMode] = useState<"light" | "dark">("dark");
   // Open And Close Mobile Menu
   const [open, setOpen] = useState<boolean>(false);
@@ -36,7 +36,11 @@ const Header = (dashboard) => {
   }
 
   return (
-    <header className="w-full fixed inset-0  mx-auto p-5 z-1000 h-[100px]">
+    <header
+      className={clsx("w-full fixed inset-0  mx-auto p-5 z-1000 h-[100px]", {
+        hidden: isProjectViewPage,
+      })}
+    >
       {/* <input type="checkbox" className="" onClick={toggleModes} /> */}
       <div className="w-full   flex items-center justify-between xl:justify-between h-[40px]">
         <button
@@ -44,23 +48,32 @@ const Header = (dashboard) => {
           onClick={toggleMenu}
         >
           <span
-            className={clsx("bg-main h-[2px] w-full transition-transform duration-300 ease-in-out", {
-              "rotate-45  translate-y-2": open,
-            })}
+            className={clsx(
+              "bg-main h-[2px] w-full transition-transform duration-300 ease-in-out",
+              {
+                "rotate-45  translate-y-2": open,
+              }
+            )}
           ></span>
           <span
-            className={clsx("bg-main h-[2px] w-full transition-transform duration-300 ease-in-out", {
-              "-rotate-45": open,
-            })}
+            className={clsx(
+              "bg-main h-[2px] w-full transition-transform duration-300 ease-in-out",
+              {
+                "-rotate-45": open,
+              }
+            )}
           ></span>
           <span
-            className={clsx("bg-main h-[2px] w-full transition-opacity duration-300 ease-in-out", {
-              hidden: open,
-            })}
+            className={clsx(
+              "bg-main h-[2px] w-full transition-opacity duration-300 ease-in-out",
+              {
+                hidden: open,
+              }
+            )}
           ></span>
         </button>
         {/* Mobile Menu  */}
-        <MobileMenu open = {open} dashboard ={dashboard}/>
+        <MobileMenu open={open} place={place} />
         <div onClick={toggleModes} className="cursor-pointer z-2000">
           {mode === "dark" ? (
             <Sun size={24} color="#FFFFFF" />
@@ -78,7 +91,6 @@ const Header = (dashboard) => {
           </span>
         </a>
       </div>
-      
     </header>
   );
 };
