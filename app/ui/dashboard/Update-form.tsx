@@ -1,19 +1,27 @@
 "use client";
-import clsx from "clsx";
-import { createProject } from "../../lib/actions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { deleteProject, getProjectById, updateProject } from "../../lib/actions";
 
-export default function AddForm() {
-  const [selected, setSelected] = useState(false);
+export default function UpdateForm({ id }: { id: number }) {
   const [oneClick, setOneClick] = useState(false);
+
   const [form, setForm] = useState({
     name: "",
     description: "",
     img: "",
   });
 
-
-  // Handle Submit
+  async function fetchProject() {
+    const project = await getProjectById(id);
+    setForm({
+      name: project.name,
+      description: project.description,
+      img: project.img,
+    });
+  }
+  useEffect(() => {
+    fetchProject();
+  }, []);
   async function handleSubmit(e) {
     e.preventDefault();
     setOneClick(true);
@@ -21,19 +29,18 @@ export default function AddForm() {
     const formData = new FormData(e.target);
 
     // Call your server action (API) directly
-    await createProject(formData);
+    await updateProject(id, formData);
 
     setOneClick(false);
     setForm({
       name: "",
       description: "",
       img: "",
-    }); 
+    });
     // Re-enable the button after submission
     // Optionally reset the form: e.target.reset();
     // setSelected(false);
   }
-
   // Handle Form
   function handleFormChange(e) {
     const { name, value } = e.target;
@@ -41,21 +48,10 @@ export default function AddForm() {
       ...prev,
       [name]: value,
     }));
-  }  
-
-  // Handle Image 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    handleFormChange(e);
-    if (file) {
-      setSelected(true);
-    } else {
-      setSelected(false);
-    }
-  };
-
+  }
   return (
     <form
+      // action={createProject}
       onSubmit={handleSubmit}
       className="h-120 md:w-100 mx-auto bg-white dark:bg-[url('/image.png')] flex flex-col justify-around items-center text-xl text-black/80 dark:text-white/80"
     >
@@ -75,43 +71,27 @@ export default function AddForm() {
         <label htmlFor="description">Project Description</label>
         <textarea
           id="multi-line"
-          rows={5}
+          rows={5} // Increase the number of rows
           required
           wrap="soft"
           name="description"
           value={form.description}
-          className="bg-slate-400/10 outline-1 outline-offset-2 outline-main/40 focus:outline-main  w-[100%] pl-2 mt-2"
+          className="bg-slate-400/10 outline-1 outline-offset-2 outline-main/40 focus:outline-main w-[100%] pl-2 mt-2" // Add h-40 or larger
           onChange={handleFormChange}
         />
       </div>
-      <div className="w-full flex flex-col justify-around items-center  h-20">
-        <label
-          htmlFor="img"
-          className={clsx(
-            "cursor-pointer p-5 border border-dashed rounded-xl border-sky-500/40",
-            {
-              "border-sky-500/100": selected,
-            }
-          )}
+
+      <div className={"w-full flex gap-5 "}>
+        <button className="w-1/2  border-1 border-main/60 hover:bg-main/10 transition duration-300 text-white/80 px-4 py-2 rounded-sm transition duration-300 ease-in-out cursor-pointer text-center">
+          Update Project
+        </button>
+        <button
+          onClick={() => deleteProject(id)}
+          className="w-1/2 border-1 border-red-500/80 text-white/80 px-4 py-2 rounded-sm hover:bg-red-500/10 transition duration-300 ease-in-out cursor-pointer"
         >
-          {selected ? "Selected ✅" : "Project Picture"}
-        </label>
-        <input
-          type="file"
-          id="img"
-          name="img"
-          className="bg-slate-400  rounded-xl w-40 hidden"
-          accept=".jpg,.jpeg,.png"
-          value={form.img}
-          onChange={handleFileChange}
-        />
+          Delete
+        </button>
       </div>
-      <button
-        disabled={oneClick}
-        className="cursor-pointer rounded-sm border-1 border-main/60 hover:bg-main/10 p-3 p-x-3"
-      >
-        Add Project
-      </button>
     </form>
   );
 }

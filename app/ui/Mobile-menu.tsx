@@ -107,7 +107,7 @@ export default function MobileMenu({ open, place }:{open:boolean, place:string})
         </>
       )}
       <li className="flex items-end">
-          <button className="bg-main w-full rounded-md p-2 font-bold cursor-pointer h-10  ">
+          <button className="border-1 border-main hover:bg-main/10 w-full rounded-md p-2 font-bold cursor-pointer h-10">
         <a href="/cv.pdf" download="cv.pdf" className="block">
           CV
         </a>
