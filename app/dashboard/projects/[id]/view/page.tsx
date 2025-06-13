@@ -29,7 +29,7 @@ export default async function page(props: { params: Promise<{ id: number }> }) {
             className="transform transition hover:scale-120 duration-700 ease-in-out w-full"
             width={200}
             height={200}
-            src="/test.png"
+            src={project.image}
             alt="Avatar"
           />
         </div>

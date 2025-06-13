@@ -12,7 +12,7 @@ export default async function Home() {
     <>
       <SideBar />
       <>
-        <Header place={"home"} />
+        <Header isProjectViewPage = {false} place={"home"} />
         <div className="max-sm:container mx-auto mx-auto flex flex-col flex-wrap justify-between xl:ml-[400px] ">
           <LandingPage />
           <About />

@@ -1,58 +1,92 @@
 "use client";
 import clsx from "clsx";
-import { createProject } from "../../lib/actions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createProject } from "../../lib/actions"; // assumes you can pass an object
+import { supabase } from "../../lib/supabaseClient";
 
 export default function AddForm() {
+  const [file, setFile] = useState<File | null>(null);
   const [selected, setSelected] = useState(false);
   const [oneClick, setOneClick] = useState(false);
+  const [loading, setLoading] = useState(false);
+  // const [imageUrl, seimagetUrl] = useState("");
   const [form, setForm] = useState({
     name: "",
     description: "",
-    img: "",
+    image: "",
   });
 
+  useEffect(() => {
+    if (file) {
+      uploadImageToFireBase();
+    }
+  }, [file, selected]);
 
-  // Handle Submit
+  //  Handle Submit
   async function handleSubmit(e) {
     e.preventDefault();
     setOneClick(true);
 
-    const formData = new FormData(e.target);
+    if (!form.image) {
+      alert("Please upload an image first.");
+      setOneClick(false);
+      return;
+    }
+   
 
-    // Call your server action (API) directly
+    // ✅ Send the internal form object with the image URL
+    const formData = new FormData();
+    formData.append("name", form.name);
+    formData.append("description", form.description);
+    formData.append("image", form.image);
     await createProject(formData);
 
+    // Reset
+    setForm({ name: "", description: "", image: "" });
+    setSelected(false);
+    setFile(null);
     setOneClick(false);
-    setForm({
-      name: "",
-      description: "",
-      img: "",
-    }); 
-    // Re-enable the button after submission
-    // Optionally reset the form: e.target.reset();
-    // setSelected(false);
   }
 
-  // Handle Form
+  // Handle Main Form
   function handleFormChange(e) {
     const { name, value } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  }  
+    setForm((prev) => ({ ...prev, [name]: value }));
+  }
 
-  // Handle Image 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    handleFormChange(e);
-    if (file) {
-      setSelected(true);
-    } else {
-      setSelected(false);
-    }
+  // Handle File Change And Store it in file useState
+  const handleFileChange = async (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+    setLoading(true);
   };
+
+  //Uploading Image To Firebase
+  async function uploadImageToFireBase() {
+    if (!file) return;
+
+    const filePath = `uploads/${Date.now()}-${file.name}`;
+    const { data, error } = await supabase.storage
+      .from("media") // Your bucket name
+      .upload(filePath, file);
+
+    if (error) {
+      console.error("Upload error:", error.message);
+      return;
+    }
+
+    const { data: publicUrlData } = supabase.storage
+      .from("media")
+      .getPublicUrl(filePath);
+
+    if (publicUrlData?.publicUrl) {
+      setForm((prev) => ({ ...prev, image: publicUrlData.publicUrl }));
+      setLoading(false);
+      setSelected(true);
+      console.log("Uploaded Image URL:", publicUrlData.publicUrl);
+      // Optionally: send the URL to your DB via API
+    }
+  }
 
   return (
     <form
@@ -77,16 +111,15 @@ export default function AddForm() {
           id="multi-line"
           rows={5}
           required
-          wrap="soft"
           name="description"
           value={form.description}
-          className="bg-slate-400/10 outline-1 outline-offset-2 outline-main/40 focus:outline-main  w-[100%] pl-2 mt-2"
+          className="bg-slate-400/10 outline-1 outline-offset-2 outline-main/40 focus:outline-main w-[100%] pl-2 mt-2"
           onChange={handleFormChange}
         />
       </div>
-      <div className="w-full flex flex-col justify-around items-center  h-20">
+      <div className="w-full flex flex-col justify-around items-center h-20">
         <label
-          htmlFor="img"
+          htmlFor="image"
           className={clsx(
             "cursor-pointer p-5 border border-dashed rounded-xl border-sky-500/40",
             {
@@ -94,21 +127,21 @@ export default function AddForm() {
             }
           )}
         >
-          {selected ? "Selected ✅" : "Project Picture"}
+          {selected ? "Selected ✅" : loading ? "Uploading" : "Project Picture"}
         </label>
         <input
           type="file"
-          id="img"
-          name="img"
-          className="bg-slate-400  rounded-xl w-40 hidden"
+          id="image"
+          name="image"
+          required ={!loading}
+          className="bg-slate-400 rounded-xl w-40 hidden"
           accept=".jpg,.jpeg,.png"
-          value={form.img}
           onChange={handleFileChange}
         />
       </div>
       <button
         disabled={oneClick}
-        className="cursor-pointer rounded-sm border-1 border-main/60 hover:bg-main/10 p-3 p-x-3"
+        className="cursor-pointer rounded-sm border-1 border-main/60 hover:bg-main/10 p-3 px-3"
       >
         Add Project
       </button>

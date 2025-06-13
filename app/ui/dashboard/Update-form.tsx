@@ -1,22 +1,35 @@
 "use client";
 import { useEffect, useState } from "react";
-import { deleteProject, getProjectById, updateProject } from "../../lib/actions";
+import {
+  deleteProject,
+  getProjectById,
+  updateProject,
+} from "../../lib/actions";
+import { supabase } from "../../lib/supabaseClient";
+import clsx from "clsx";
 
 export default function UpdateForm({ id }: { id: number }) {
-  const [oneClick, setOneClick] = useState(false);
-
+  const [file, setFile] = useState<File | null>(null);
+  const [selected, setSelected] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     name: "",
     description: "",
-    img: "",
+    image: "",
   });
+
+  useEffect(() => {
+    if (file) {
+      updateImage();
+    }
+  }, [file, selected]);
 
   async function fetchProject() {
     const project = await getProjectById(id);
     setForm({
       name: project.name,
       description: project.description,
-      img: project.img,
+      image: project.image,
     });
   }
   useEffect(() => {
@@ -24,18 +37,16 @@ export default function UpdateForm({ id }: { id: number }) {
   }, []);
   async function handleSubmit(e) {
     e.preventDefault();
-    setOneClick(true);
 
     const formData = new FormData(e.target);
 
     // Call your server action (API) directly
     await updateProject(id, formData);
 
-    setOneClick(false);
     setForm({
       name: "",
       description: "",
-      img: "",
+      image: "",
     });
     // Re-enable the button after submission
     // Optionally reset the form: e.target.reset();
@@ -49,6 +60,49 @@ export default function UpdateForm({ id }: { id: number }) {
       [name]: value,
     }));
   }
+
+  const updateImage = async () => {
+    if (!file) return;
+
+     const oldPath = `uploads/${form.image}`;
+    // 1. Delete old image (optional, you can skip this if replacing with same path)
+    if (oldPath) {
+      await supabase.storage.from("media").remove([oldPath]);
+    }
+
+    // 2. Upload new image
+    const newPath = `uploads/${Date.now()}-${file.name}`;
+
+    const { data, error } = await supabase.storage
+      .from("media")
+      .upload(newPath, file);
+
+    if (error) {
+      console.error("Upload error:", error.message);
+      return;
+    }
+
+    // 3. Get public URL
+    const { data: urlData } = supabase.storage
+      .from("media")
+      .getPublicUrl(newPath);
+
+    if (urlData?.publicUrl) {
+      setForm((prev) => ({ ...prev, img: urlData.publicUrl }));
+      setSelected(true);
+      setLoading(false);
+      console.log("New image URL:", urlData.publicUrl);
+
+      // Optionally: save the new path or URL to your DB
+    }
+  };
+
+  // Handle File Change And Store it in file useState
+  const handleFileChange = async (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+    setLoading(true);
+  };
   return (
     <form
       // action={createProject}
@@ -79,6 +133,31 @@ export default function UpdateForm({ id }: { id: number }) {
           className="bg-slate-400/10 outline-1 outline-offset-2 outline-main/40 focus:outline-main w-[100%] pl-2 mt-2" // Add h-40 or larger
           onChange={handleFormChange}
         />
+        <div className="w-full flex flex-col justify-around items-center h-20">
+          <label
+            htmlFor="image"
+            className={clsx(
+              "cursor-pointer p-5 border border-dashed rounded-xl border-sky-500/40",
+              {
+                "border-sky-500/100": selected,
+              }
+            )}
+          >
+            {selected
+              ? "Selected ✅"
+              : loading
+              ? "Uploading"
+              : "Project Picture"}
+          </label>
+          <input
+            type="file"
+            id="image"
+            name="image"
+            className="bg-slate-400 rounded-xl w-40 hidden"
+            accept=".jpg,.jpeg,.png"
+            onChange={handleFileChange}
+          />
+        </div>
       </div>
 
       <div className={"w-full flex gap-5 "}>

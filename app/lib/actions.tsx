@@ -9,10 +9,11 @@ export async function createProject(formData: FormData) {
     const sql = neon(`${process.env.DATABASE_URL}`);
     const name = formData.get("name") as string;
     const description = formData.get("description") as string;
+    const image = formData.get("image") as string;
 
     await sql`
-      INSERT INTO projects (name, description)
-      VALUES (${name}, ${description});
+      INSERT INTO projects (name, description, image)
+      VALUES (${name}, ${description}, ${image} );
     `;
   } catch (error) {
     console.error("Insert failed:", error);
@@ -65,10 +66,11 @@ export async function updateProject(id: number, formData: FormData) {
     const sql = neon(`${process.env.DATABASE_URL}`);
     const name = formData.get("name") as string;
     const description = formData.get("description") as string;
+    const image = formData.get("image") as string;
 
     await sql`
       UPDATE projects
-      SET name = ${name}, description = ${description}
+      SET name = ${name}, description = ${description}, image = ${image}
       WHERE id = ${id};
     `;
   } catch (error) {

@@ -17,9 +17,10 @@ export default function ProjectsTable({ projects }: ProjectsTableProps) {
         <table className="min-w-full">
           <thead className="border-b border-sky-500/10 text-gray-100">
             <tr>
-              <th className="px-4 py-5 text-left">ID</th>
+              {/* <th className="px-4 py-5 text-left">ID</th> */}
               <th className="px-4 py-5 text-left">Name</th>
               <th className="px-4 py-5 text-left">Description</th>
+              <th className="px-4 py-5 text-left">Image</th>
             </tr>
           </thead>
           <tbody>
@@ -29,9 +30,11 @@ export default function ProjectsTable({ projects }: ProjectsTableProps) {
                 className="border-b border-main/10 cursor-pointer hover:border-main"
                 onClick={() => handleRowClick(project.id)}
               >
-                <td className=" px-4 py-5">{project.id}</td>
+                {/* <td className=" px-4 py-5">{project.id}</td> */}
                 <td className=" px-4 py-5">{project.name}</td>
                 <td className=" px-4 py-5">{project.description}</td>
+                <td className=" px-4 py-5"><button className="rouded-sm bg-main px-5 cursor-pointer"><a href={project.image}>View</a></button></td>
+                
               </tr>
             ))}
           </tbody>
